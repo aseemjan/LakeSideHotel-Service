@@ -1,6 +1,5 @@
 package com.aseem.lakesidehotel.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,8 +46,6 @@ public class BookedRoom {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Room_Id")
     private Room room;
-
-
 
     public void calculateTotNumOfGuests(){
         this.totalNumOfGuests = this.NumOfAdults + this.NumOfChildren;
