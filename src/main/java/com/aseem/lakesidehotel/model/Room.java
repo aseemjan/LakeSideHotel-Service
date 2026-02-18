@@ -45,7 +45,7 @@ public class Room {
         booking.setRoom(this);
         isBooked = true;
         //We'll have to provide a booking code for the bookings made
-        String bookingCode = RandomStringUtils.randomAlphanumeric(10);
+        String bookingCode = RandomStringUtils.randomNumeric(10);
         booking.setBookingConfirmationCode(bookingCode);
     }
 }
