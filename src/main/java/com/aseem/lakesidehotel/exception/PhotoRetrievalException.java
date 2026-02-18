@@ -1,4 +1,7 @@
 package com.aseem.lakesidehotel.exception;
 
-public class PhotoRetrievalException {
+public class PhotoRetrievalException extends RuntimeException {
+    public PhotoRetrievalException(String message) {
+        super(message);
+    }
 }
