@@ -3,17 +3,17 @@ package com.aseem.lakesidehotel.controller;
 import com.aseem.lakesidehotel.exception.PhotoRetrievalException;
 import com.aseem.lakesidehotel.model.BookedRoom;
 import com.aseem.lakesidehotel.model.Room;
-import com.aseem.lakesidehotel.response.BookingResponse;
 import com.aseem.lakesidehotel.response.RoomResponse;
 import com.aseem.lakesidehotel.service.BookingService;
 import com.aseem.lakesidehotel.service.IRoomService;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Blob;
@@ -24,7 +24,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/rooms")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"})
 public class RoomController {
 
     private final IRoomService roomService;
@@ -37,6 +37,7 @@ public class RoomController {
             @RequestParam("roomPrice") BigDecimal roomPrice) throws SQLException, IOException {
 
         Room savedRoom = roomService.addNewRoom(photo, roomType, roomPrice);
+        /*RoomResponse response = new RoomResponse(savedRoom.getId(), savedRoom.getRoomType(),  savedRoom.getRoomPrice(), room.isBooked(), photoBytes);*/
         RoomResponse response = new RoomResponse(savedRoom.getId(), savedRoom.getRoomType(),  savedRoom.getRoomPrice());
 
         return ResponseEntity.ok(response);
@@ -49,6 +50,7 @@ public class RoomController {
 
 
     //Endpoint to get all the rooms from the database and display on the frontend
+    @GetMapping("/all-rooms")
     public ResponseEntity<List<RoomResponse>> getAllRooms() throws SQLException {
         List<Room> rooms = roomService.getAllRooms();
 
@@ -65,13 +67,38 @@ public class RoomController {
         return ResponseEntity.ok(roomResponses);
     }
 
+    // Endpoint to delete a room using Room ID
+    @DeleteMapping("/delete/room/{roomId}")
+    public ResponseEntity<Void> deleteRoom(@PathVariable Long roomId){
+        roomService.deleteRoom(roomId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Endpoint to update room
+    @PutMapping("/update/{roomId}")
+    public ResponseEntity<RoomResponse> updateRoom(@PathVariable Long roomId,
+                                                   @RequestParam (required = false) String roomType,
+                                                   @RequestParam (required = false) BigDecimal roomPrice,
+                                                   @RequestParam (required = false) MultipartFile photo) throws IOException, SQLException {
+        byte[] photoBytes = photo != null && !photo.isEmpty() ?
+                photo.getBytes() : roomService.getRoomPhotoByRoomId(roomId);
+
+        Blob photoBlob = photoBytes != null && photoBytes.length > 0 ? new SerialBlob(photoBytes) :null;
+        Room theRoom = roomService.updateRoom(roomId, roomType, roomPrice, photoBytes);
+        theRoom.setPhoto(photoBlob);
+
+        RoomResponse roomResponse = getRoomResponse(theRoom);
+        return ResponseEntity.ok(roomResponse);
+
+    }
+
     private RoomResponse getRoomResponse(Room room) {
         List<BookedRoom> bookings = getAllBookingsByRoomId(room.getId());
-        List<BookingResponse> bookingInfo = bookings.
+        /*List<BookingResponse> bookingInfo = bookings.
                 stream().
                 map(booking -> new BookingResponse(booking.getBookingId(),
                         booking.getCheckInDate(), booking.getCheckOutDate(),
-                        booking.getBookingConfirmationCode())).toList();
+                        booking.getBookingConfirmationCode())).toList();*/
 
         byte[] photoBytes = null;
         Blob photoBlob = room.getPhoto();
@@ -83,7 +110,7 @@ public class RoomController {
             }
         }
         return new RoomResponse(room.getId(), room.getRoomType(),
-                    room.getRoomPrice(), room.isBooked(), photoBytes, bookingInfo);
+                    room.getRoomPrice(), room.isBooked(), photoBytes);
     }
 
     private List<BookedRoom> getAllBookingsByRoomId(Long roomId) {

@@ -1,5 +1,6 @@
 package com.aseem.lakesidehotel.service;
 
+import com.aseem.lakesidehotel.exception.InternalServerException;
 import com.aseem.lakesidehotel.exception.ResourceNotFoundException;
 import com.aseem.lakesidehotel.model.Room;
 import com.aseem.lakesidehotel.repository.RoomRepository;
@@ -54,5 +55,30 @@ public class RoomService implements IRoomService {
             return photoBlob.getBytes(1, (int) photoBlob.length());
         }
         return null;
+    }
+
+    @Override
+    public void deleteRoom(Long roomId) {
+        Optional<Room> theRoom = roomRepository.findById(roomId);
+        if(theRoom.isPresent()) {
+            roomRepository.deleteById(roomId);
+        }
+    }
+
+    @Override
+    public Room updateRoom(Long roomId, String roomType, BigDecimal roomPrice, byte[] photoBytes) {
+        Room room = roomRepository.findById(roomId).orElseThrow(()
+                -> new ResourceNotFoundException("Sorry, room not found"));
+
+        if(roomType != null){room.setRoomType(roomType);}
+        if(roomPrice != null){room.setRoomPrice(roomPrice);}
+        if(photoBytes != null && photoBytes.length > 0) {
+            try{
+                room.setPhoto(new SerialBlob(photoBytes));
+            }catch(SQLException ex){
+                throw new InternalServerException("Error updating room");
+            }
+        }
+        return roomRepository.save(room);
     }
 }
