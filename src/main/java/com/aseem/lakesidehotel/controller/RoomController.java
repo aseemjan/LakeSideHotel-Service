@@ -1,6 +1,7 @@
 package com.aseem.lakesidehotel.controller;
 
 import com.aseem.lakesidehotel.exception.PhotoRetrievalException;
+import com.aseem.lakesidehotel.exception.ResourceNotFoundException;
 import com.aseem.lakesidehotel.model.BookedRoom;
 import com.aseem.lakesidehotel.model.Room;
 import com.aseem.lakesidehotel.response.RoomResponse;
@@ -20,6 +21,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -90,6 +92,17 @@ public class RoomController {
         RoomResponse roomResponse = getRoomResponse(theRoom);
         return ResponseEntity.ok(roomResponse);
 
+    }
+
+    // Endpoint to get a room by ID
+    @GetMapping("/room/{roomId}")
+    public ResponseEntity<Optional<RoomResponse>> getRoomById(@PathVariable Long roomId){
+        Optional<Room> theRoom = roomService.getRoomByRoomId(roomId);
+
+        return theRoom.map(room -> {
+            RoomResponse roomResponse = getRoomResponse(room);
+            return ResponseEntity.ok(Optional.of(roomResponse));
+        }).orElseThrow(() ->new ResourceNotFoundException("Room not found"));
     }
 
     private RoomResponse getRoomResponse(Room room) {
