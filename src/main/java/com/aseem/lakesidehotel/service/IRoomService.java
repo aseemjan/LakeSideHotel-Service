@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface IRoomService {
@@ -22,5 +23,6 @@ public interface IRoomService {
 
     Room updateRoom(Long roomId, String roomType, BigDecimal roomPrice, byte[] photoBytes);
 
-    Optional<Room> getRoomByRoomId(Long roomId);
+    Optional<Room> getRoomById(Long roomId);
+
 }
