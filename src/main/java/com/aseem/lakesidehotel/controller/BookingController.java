@@ -20,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/bookings")
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"})
 public class BookingController {
     private final IBookingService bookingService;
 
@@ -36,7 +37,7 @@ public class BookingController {
         return ResponseEntity.ok(bookingResponses);
     }
 
-    @GetMapping("/confirmation/{confrimationCode")
+    @GetMapping("/confirmation/{confirmationCode}")
     public ResponseEntity<?> getBookingByConfirmationCode(@PathVariable String confirmationCode){
         try{
             BookedRoom booking = bookingService.findByBookingConfirmationCode(confirmationCode);
