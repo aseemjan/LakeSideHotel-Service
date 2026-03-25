@@ -14,5 +14,5 @@ public interface BookingRepository extends JpaRepository<BookedRoom, Long> {
     void deleteById(Long bookingId);
 
 
-    BookedRoom findByBookingConfirmationCode(String confirmationCode);
+    Optional <BookedRoom> findByBookingConfirmationCode(String confirmationCode);
 }
