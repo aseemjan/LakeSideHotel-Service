@@ -1,5 +1,7 @@
 package com.aseem.lakesidehotel.service;
 
+import java.util.*;
+
 import com.aseem.lakesidehotel.exception.UserAlreadyExistsException;
 
 import com.aseem.lakesidehotel.model.Role;
@@ -13,10 +15,10 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
-import java.util.*;
 
-
+@Service
 @RequiredArgsConstructor
 public class UserService implements IUserService {
     private final UserRepository userRepository;
