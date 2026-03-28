@@ -12,11 +12,12 @@ import com.aseem.lakesidehotel.repository.RoleRepository;
 import com.aseem.lakesidehotel.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 
-
+@Service
 @RequiredArgsConstructor
 public class RoleService implements IRoleService {
     private final RoleRepository roleRepository;
