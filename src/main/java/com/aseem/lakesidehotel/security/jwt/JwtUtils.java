@@ -23,10 +23,10 @@ import org.springframework.stereotype.Component;
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value("${security.jwt.secret}")
+    @Value("${auth.token.jwtSecret}")
     private String jwtSecret;
 
-    @Value("${security.jwt.jwtMils}")
+    @Value("${auth.token.expirationInMils}")
     private int jwtExpirationTime;
 
     public String generateJwtTokenForUser(Authentication authentication) {

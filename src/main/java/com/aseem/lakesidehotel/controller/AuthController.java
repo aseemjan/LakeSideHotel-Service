@@ -1,11 +1,16 @@
 package com.aseem.lakesidehotel.controller;
 
 import com.aseem.lakesidehotel.exception.UserAlreadyExistsException;
+
 import com.aseem.lakesidehotel.model.User;
+
 import com.aseem.lakesidehotel.service.IUserService;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.PostMapping;
 
 @RequiredArgsConstructor

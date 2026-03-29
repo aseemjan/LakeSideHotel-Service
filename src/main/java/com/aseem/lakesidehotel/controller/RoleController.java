@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.FOUND;
 
-@CrossOrigin(origins = "http://localhost:5173")
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/roles")
