@@ -24,9 +24,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+@RequestMapping("/auth")
+@RestController
 @RequiredArgsConstructor
 public class AuthController {
     private final IUserService userService;
@@ -34,7 +38,7 @@ public class AuthController {
     private final JwtUtils jwtUtils;
 
     @PostMapping("/register-user")
-    public ResponseEntity<?> registerUser(User user){
+    public ResponseEntity<?> registerUser(@RequestBody User user){
         try{
             userService.registerUser(user);
             return ResponseEntity.ok("Registration Successful! ");
