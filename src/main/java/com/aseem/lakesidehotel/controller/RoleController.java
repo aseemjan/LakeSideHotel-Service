@@ -20,7 +20,7 @@ import static org.springframework.http.HttpStatus.FOUND;
 
 @RestController
 @RequiredArgsConstructor
-//@RequestMapping("/api/roles")
+
 @RequestMapping("/roles")
 public class RoleController {
     private final IRoleService roleService;

@@ -1,6 +1,5 @@
 package com.aseem.lakesidehotel.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
