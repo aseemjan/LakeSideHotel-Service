@@ -28,6 +28,9 @@ Provides REST APIs for room management, bookings, and authentication.
 ---
 
 ## 📂 Project Structure
+
+```bash
+
 src/main/java/com/aseem/lakesidehotel
 ├── controller # REST Controllers
 ├── service # Business Logic
@@ -37,8 +40,10 @@ src/main/java/com/aseem/lakesidehotel
 ├── response # Response DTOs
 ├── security # JWT + Security Config
 ├── exception # Global Exception Handling
+│
+└── LakeSideHotelApplication.java  # Main entry point
 
-
+```
 ---
 
 ## 🔌 API Endpoints (Sample)
