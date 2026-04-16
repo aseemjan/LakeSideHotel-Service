@@ -76,5 +76,7 @@ cd LakeSideHotel-Service
 
 ```
 
+---
+
 🔗 Frontend Repository
 👉 LakeSideHotel-Client - https://github.com/aseemjan/LakeSideHotel-Client
