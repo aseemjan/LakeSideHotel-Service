@@ -23,7 +23,7 @@ Provides REST APIs for room management, bookings, and authentication.
 - Spring Security
 - JWT (JSON Web Tokens)
 - Maven
-- (Add DB here: MySQL / MongoDB if used)
+- MySQL
 
 ---
 
